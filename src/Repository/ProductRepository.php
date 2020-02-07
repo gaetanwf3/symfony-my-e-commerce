@@ -47,4 +47,20 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * Permet de récupèrer le produit plus cher qu'un certain montant
+     * @param $price
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function findOneGreaterThanPrice($price): ?Product
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.price > :price')
+            ->setParameter('price', $price * 100)
+            ->orderBy('p.price', 'DESC')
+            ->getQuery();
+
+        return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
+    }
 }
