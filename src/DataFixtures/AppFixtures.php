@@ -24,6 +24,7 @@ class AppFixtures extends Fixture
             $product->setSlug('super telephone'.$i);
             $product->setDescription($faker->text());
             $product->setFavorite($faker->boolean);
+            $product->setDate($faker->dateTimeBetween('-30 days'));
             $product->setColor($faker->randomElements($color, rand(0, count($color))));
             $product->setPrice($faker->numberBetween(99, 999));
             $manager->persist($product);

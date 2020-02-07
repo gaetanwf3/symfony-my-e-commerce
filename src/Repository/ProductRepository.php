@@ -19,6 +19,36 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function findByLastPhones()
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->orderBy('p.date', 'DESC')
+            ->setMaxResults(4)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
+    public function findOneByLastPhone()
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->orderBy('p.date', 'DESC')
+            ->getQuery();
+
+        return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
+    }
+
+    public function findOneByFavorite()
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.favorite = true')
+            ->getQuery();
+
+        return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
+    }
+
+
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
@@ -48,19 +78,5 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-    /**
-     * Permet de récupèrer le produit plus cher qu'un certain montant
-     * @param $price
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    private function findOneGreaterThanPrice($price): ?Product
-    {
-        $queryBuilder = $this->createQueryBuilder('p')
-            ->where('p.price > :price')
-            ->setParameter('price', $price * 100)
-            ->orderBy('p.price', 'DESC')
-            ->getQuery();
 
-        return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
-    }
 }

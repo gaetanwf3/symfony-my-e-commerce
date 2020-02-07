@@ -15,10 +15,12 @@ class ProductController extends AbstractController
      */
     public function list(ProductRepository $productRepository)
     {
+        $lastProduct = $productRepository->findOneByLastPhone();
         $products = $productRepository->findAll();
 
         return $this->render('product/list.html.twig', [
             'products' => $products,
+            'lastphone' => $lastProduct,
         ]);
     }
 
